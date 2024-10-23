@@ -8,15 +8,15 @@ import * as THREE from 'three';
 const scene = new THREE.Scene();
 
 //camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 4;
 
 //HDRI
 new RGBELoader()
     .load('https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/pond_bridge_night_1k.hdr', function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
-        scene.background = texture;
         scene.environment = texture;
+        scene.background = texture;  // Add this line to set the background
     });
 
 //objects
