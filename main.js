@@ -15,3 +15,12 @@ const mesh = new THREE.Mesh(geometry,material);
 scene.add(mesh);
 
 //renderer
+const renderer = new THREE.WebGLRenderer({
+    canvas: document.querySelector("#canvas"),
+    antialias:true,
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+//render
+renderer.render(scene,camera);
