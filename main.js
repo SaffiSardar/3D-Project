@@ -26,6 +26,7 @@ renderer.setSize(window.innerWidth,window.innerHeight);
 
 //controls
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enablePan = true;
 controls.enableDamping = true;
 
 //animate
