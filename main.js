@@ -1,4 +1,5 @@
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import './style.css';
 import * as THREE from 'three';
 
@@ -23,13 +24,17 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
 renderer.setSize(window.innerWidth,window.innerHeight);
 
+//controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
 //animate
 
 function animate(){
     window.requestAnimationFrame(animate);
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
-    mesh.rotation.z += 0.01;
+    
+    // Update controls
+    controls.update();
     
     //render
     renderer.render(scene,camera);
