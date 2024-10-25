@@ -1,6 +1,5 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
@@ -60,10 +59,6 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
 renderer.outputEncoding = THREE.sRGBEncoding;
 
-//OrbitControls
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-
 // Post-processing
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
@@ -73,12 +68,20 @@ const rgbShiftPass = new ShaderPass(RGBShiftShader);
 rgbShiftPass.uniforms['amount'].value = 0.0030;
 composer.addPass(rgbShiftPass);
 
+window.addEventListener("resize", () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    composer.setSize(window.innerWidth, window.innerHeight);
+})
+
+window.addEventListener("mousemove", (e) => {
+    console.log(e.clientX/window.innerWidth, e.clientY/window.innerHeight);
+})
+
 //animate
 function animate() {
     window.requestAnimationFrame(animate);
-    
-    //update controls
-    controls.update();
     
     //render with post-processing
     composer.render();
