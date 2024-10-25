@@ -1,6 +1,10 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
 import './style.css';
 import * as THREE from 'three';
 
@@ -16,7 +20,7 @@ new RGBELoader()
     .load('https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/pond_bridge_night_1k.hdr', function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         scene.environment = texture;
-        scene.background = texture;  // Add this line to set the background
+        // scene.background = texture;
     });
 
 //objects
@@ -59,6 +63,15 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
+// Post-processing
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const rgbShiftPass = new ShaderPass(RGBShiftShader);
+rgbShiftPass.uniforms['amount'].value = 0.0030;
+composer.addPass(rgbShiftPass);
+
 //animate
 function animate() {
     window.requestAnimationFrame(animate);
@@ -66,8 +79,8 @@ function animate() {
     //update controls
     controls.update();
     
-    //render
-    renderer.render(scene, camera);
+    //render with post-processing
+    composer.render();
 }
 
 animate();
