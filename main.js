@@ -13,7 +13,7 @@ const scene = new THREE.Scene();
 
 //camera
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 4;
+camera.position.z = 3.5;
 
 //HDRI
 new RGBELoader()
@@ -52,6 +52,7 @@ loader.load(
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#canvas"),
     antialias: true,
+    alpha: true,
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight);
