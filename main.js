@@ -4,6 +4,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import './style.css';
 import * as THREE from 'three';
 
@@ -59,6 +60,11 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
 renderer.outputEncoding = THREE.sRGBEncoding;
 
+// Orbit controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.enableZoom = false; // Disable zooming with mouse scroll
+
 // Post-processing
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
@@ -82,6 +88,9 @@ window.addEventListener("mousemove", (e) => {
 //animate
 function animate() {
     window.requestAnimationFrame(animate);
+    
+    // Update controls
+    controls.update();
     
     //render with post-processing
     composer.render();
